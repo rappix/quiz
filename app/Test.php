@@ -13,4 +13,8 @@ class Test extends Model
     public function questions() {
     	return $this->hasMany('App\Question')->orderBy('updated_at', 'DESC');
     }
+
+    public function questionsCount() {
+    	return count($this->questions);
+    }
 }

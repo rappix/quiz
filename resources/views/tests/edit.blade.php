@@ -4,6 +4,13 @@
 
 <a href="{{ route('create_test') }}" class="btn btn-primary mb-3">Create NEW Test</a>
 
+<form action="{{ route('destroy_test', ['test_id' => $test->id ]) }}" method="post">
+    {{ csrf_field() }}
+    <button type="submit" class="btn btn-sm btn-danger d-inline">Delete THIS Test</button>
+</form>
+
+<br>
+
 <form action="{{ route('update_test', ['test_id' => $test->id]) }}" method="post">
     {{ csrf_field() }}
     <h1>Edit Test: {{ $test->name }}</h1>
@@ -67,8 +74,16 @@ function AddAnswerField(){
 document.getElementById('answer_add').addEventListener('click', AddAnswerField);
 </script>
 
+@if($test->questionsCount() > 0)
+    <h1>All Questions</h1>
+@endif
 @foreach($test->questions as $question)
-    {{ $question->name }}<br>
+    <form action="{{ route('destroy_question', ['test_id' => $test->id ]) }}" method="post">
+        {{ csrf_field() }}
+        <input type="hidden" name="question_id" value="{{ $question->id }}">
+        <span class="d-inline">{{ $question->name }}</span>
+        <button type="submit" class="btn btn-sm btn-danger d-inline">X</button>
+    </form>
 @endforeach
 
 @endsection

@@ -7,7 +7,15 @@
 	<h1>or edit existing ones</h1>
 
 	@foreach($tests as $test)
-		<br><a href="{{ route('edit_test', ['test_id' => $test->id]) }}">{{ $test->name }}</a>
+		<a href="{{ route('edit_test', ['test_id' => $test->id]) }}">{{ $test->name }}</a><br>
 	@endforeach
+
+	@if($errors->any())
+	    <div class="alert alert-danger">{{ $errors->first() }}</div>
+	@endif
+
+	@if(session('success'))
+	    <div class="alert alert-success">{{ session('success') }}</div>
+	@endif
 
 @endsection

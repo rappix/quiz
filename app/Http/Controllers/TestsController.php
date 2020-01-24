@@ -54,4 +54,17 @@ class TestsController extends Controller
 
         return redirect()->route('edit_test', ['test_id' => $test->id])->withSuccess('Successfully updated.');
     }
+
+    public function destroy(Request $request, $test_id) {
+        $test = Test::find($test_id);
+
+        foreach($test->questions as $question) {
+            $question->answers()->delete();
+            $question->delete();
+        }
+
+        $test->delete();
+
+        return redirect()->route('show_tests')->withSuccess('The requested test is deleted.');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\StoreQuestionRequest;
+use App\Http\Requests\DestroyQuestionRequest;
 
 use App\Question;
 use App\Answer;
@@ -41,5 +42,18 @@ class QuestionsController extends Controller
         }
 
         return redirect()->route('edit_test', ['test_id' => $test_id])->withSuccess('New question added successfully!');
+    }
+
+    public function destroy(DestroyQuestionRequest $request) {
+        $validated = $request->validated();
+
+        $question = Question::find($request->input('question_id'));
+
+        $test_id = $question->test->id;
+
+        $question->answers()->delete();
+        $question->delete();
+
+        return redirect()->route('edit_test', ['test_id' => $test_id])->withSuccess('Question deleted successfully!');
     }
 }
